@@ -40,7 +40,7 @@ screen -ls
 ### Pridobitev kode iz repozitorija
 
 ```shell
-git clone https://github.com/j-gavran/PSUF_Hmumu.git
+git clone https://github.com/j-gavran/PSUF.git
 ```
 
 ### Postavitev virtualnega okolja
