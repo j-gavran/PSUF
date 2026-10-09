@@ -15,7 +15,7 @@ mplhep>=0.3.51
 scikit-learn>=1.5.1
 
 # notebook
-jupyterlab>=4.2.5 
+jupyterlab>=4.6.4
 
 # progress bar
 tqdm>=4.66.5
