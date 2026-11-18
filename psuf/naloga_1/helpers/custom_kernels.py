@@ -16,11 +16,12 @@ class Gibbs(Kernel):
 
     """
 
-    def __init__(self, l0=1.0, l0_bounds=(1e-6, 1e5), l_slope=1.0, l_slope_bounds=(1e-6, 1e5)):
+    def __init__(self, l0=1.0, l0_bounds=(1e-6, 1e5), l_slope=1.0, l_slope_bounds=(1e-6, 1e5), x0=None):
         self.l0 = l0
         self.l0_bounds = l0_bounds
         self.l_slope = l_slope
         self.l_slope_bounds = l_slope_bounds
+        self.x0 = x0
 
     @property
     def hyperparameter_l0(self):
@@ -31,75 +32,34 @@ class Gibbs(Kernel):
         return Hyperparameter("l_slope", "numeric", self.l_slope_bounds)
 
     def __call__(self, X, Y=None, eval_gradient=False):
-        """Retrn K(X,Y)"""
+        """Return K(X,Y)"""
 
-        l = lambda x: self.l0 + self.l_slope * x  # Helper function
         f = lambda theta: self.clone_with_theta(theta)(X, Y)  # Helper function
 
-        X = np.atleast_2d(X)
-
-        s = X.shape
-        if len(s) != 2:
+        X = _convert_to_double(np.atleast_2d(X))
+        if X.ndim != 2:
             raise ValueError("A 2-dimensional array must be passed.")
 
-        if Y is None:
-            m, n = s
-            K = np.zeros((m * (m - 1)) // 2, dtype=np.double)
-            X = _convert_to_double(X)
-            X = X - X[0]  # note: this step just shifts the x-range to make the hyper-pars a bit more intuitive
-            t = 0
-            for i in range(0, m - 1):
-                for j in range(i + 1, m):
-                    xi_xj = X[i] - X[j]
-                    li = l(X[i])  # b*x+c ( b = l_slope, c = l0 )
-                    lj = l(X[j])
-                    li2_lj2 = np.dot(li, li) + np.dot(lj, lj)  # l(x)^2 + l(x')^2
-                    coeff = np.sqrt(2 * li * lj / (li2_lj2))
-                    K[t] = coeff * np.exp(-1 * (xi_xj * xi_xj) / li2_lj2)
-                    t = t + 1
+        Y_ = X if Y is None else _convert_to_double(np.atleast_2d(Y))
 
-            K = squareform(K)
-            np.fill_diagonal(K, 1)
+        # same shift for X and Y, otherwise K(X_test, X_train) is inconsistent with K(X_train)
+        x0 = Y_[0, 0] if self.x0 is None else self.x0
+        x = X[:, 0] - x0
+        y = Y_[:, 0] - x0
 
-            if eval_gradient:
-                # approximate gradient numerically
-                return K.copy(), _approx_fprime(self.theta, f, 1e-10)
-            else:
-                return K.copy()
+        lx = (self.l0 + self.l_slope * x)[:, None]  # b*x+c ( b = l_slope, c = l0 )
+        ly = (self.l0 + self.l_slope * y)[None, :]
+        lx2_ly2 = lx * lx + ly * ly  # l(x)^2 + l(x')^2
+        K = np.sqrt(2 * lx * ly / lx2_ly2) * np.exp(-((x[:, None] - y[None, :]) ** 2) / lx2_ly2)
 
+        if eval_gradient:
+            # approximate gradient numerically
+            return K, _approx_fprime(self.theta, f, 1e-10)
         else:
-            mx, nx = s
-            sy = Y.shape
-            my, ny = sy
-            K = np.zeros((mx, my), dtype=np.double)
-            X = _convert_to_double(X)
-            Y = _convert_to_double(X)
-
-            X = X - X[0]  # note: this step just shifts the x-range to make the hyper-pars a bit more intuitive
-            Y = Y - Y[0]
-
-            t = 0
-            for i in range(0, mx):
-                for j in range(0, my):
-                    xi_yj = X[i] - Y[j]
-                    li = l(X[i])  # b*x+c ( b = l_slope, c = l0 )
-                    lj = l(Y[j])
-                    li2_lj2 = li * li + lj * lj  # l(x)^2 + l(x')^2
-                    coeff = np.sqrt(2 * li * lj / (li2_lj2))
-                    K[i][j] = coeff * np.exp(-1 * (xi_yj * xi_yj) / li2_lj2)
-                    t = t + 1
-
-            # K = squareform(K)
-            # np.fill_diagonal(K,1)
-
-            if eval_gradient:
-                # approximate gradient numerically
-                return K.copy(), _approx_fprime(self.theta, f, 1e-10)
-            else:
-                return K.copy()
+            return K
 
     def diag(self, X):
-        return np.diag(self(X))
+        return np.ones(np.atleast_2d(X).shape[0])
 
     def is_stationary(self):
         return False
