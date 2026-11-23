@@ -1,0 +1,6 @@
+torch>=2.14.0
+transformers>=4.20.0
+einops>=0.8.0
+awkward>=2.13.0
+h5py>=3.16.0
+hdf5plugin>=6.0.0

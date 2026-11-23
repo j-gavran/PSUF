@@ -1,0 +1,79 @@
+\documentclass[tikz,border=8pt]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath}
+\usetikzlibrary{arrows.meta,positioning,calc}
+\definecolor{jet}{RGB}{49,130,189}
+\definecolor{ink}{RGB}{40,40,40}
+\definecolor{muted}{RGB}{110,110,110}
+\begin{document}
+\begin{tikzpicture}[font=\sffamily, ink]
+
+\fill[jet!81!white] (0.0,2.9) rectangle ++(1.45,-1.45);
+\node[white, font=\sffamily\large] at (0.725,2.175) {0.8};
+\fill[jet!17!white] (1.45,2.9) rectangle ++(1.45,-1.45);
+\node[ink, font=\sffamily\large] at (2.175,2.175) {0.1};
+\fill[jet!12!white] (2.9,2.9) rectangle ++(1.45,-1.45);
+\node[ink, font=\sffamily\large] at (3.625,2.175) {0.05};
+\fill[jet!12!white] (4.35,2.9) rectangle ++(1.45,-1.45);
+\node[ink, font=\sffamily\large] at (5.074999999999999,2.175) {0.05};
+\fill[jet!17!white] (0.0,1.45) rectangle ++(1.45,-1.45);
+\node[ink, font=\sffamily\large] at (0.725,0.725) {0.1};
+\fill[jet!63!white] (1.45,1.45) rectangle ++(1.45,-1.45);
+\node[white, font=\sffamily\large] at (2.175,0.725) {0.6};
+\fill[jet!26!white] (2.9,1.45) rectangle ++(1.45,-1.45);
+\node[ink, font=\sffamily\large] at (3.625,0.725) {0.2};
+\fill[jet!17!white] (4.35,1.45) rectangle ++(1.45,-1.45);
+\node[ink, font=\sffamily\large] at (5.074999999999999,0.725) {0.1};
+\fill[jet!12!white] (0.0,0.0) rectangle ++(1.45,-1.45);
+\node[ink, font=\sffamily\large] at (0.725,-0.725) {0.05};
+\fill[jet!26!white] (1.45,0.0) rectangle ++(1.45,-1.45);
+\node[ink, font=\sffamily\large] at (2.175,-0.725) {0.2};
+\fill[jet!67!white] (2.9,0.0) rectangle ++(1.45,-1.45);
+\node[white, font=\sffamily\large] at (3.625,-0.725) {0.65};
+\fill[jet!17!white] (4.35,0.0) rectangle ++(1.45,-1.45);
+\node[ink, font=\sffamily\large] at (5.074999999999999,-0.725) {0.1};
+\fill[jet!26!white] (0.0,-1.4499999999999997) rectangle ++(1.45,-1.45);
+\node[ink, font=\sffamily\large] at (0.725,-2.175) {0.2};
+\fill[jet!17!white] (1.45,-1.4499999999999997) rectangle ++(1.45,-1.45);
+\node[ink, font=\sffamily\large] at (2.175,-2.175) {0.1};
+\fill[jet!17!white] (2.9,-1.4499999999999997) rectangle ++(1.45,-1.45);
+\node[ink, font=\sffamily\large] at (3.625,-2.175) {0.1};
+\fill[jet!63!white] (4.35,-1.4499999999999997) rectangle ++(1.45,-1.45);
+\node[white, font=\sffamily\large] at (5.074999999999999,-2.175) {0.6};
+\draw[white, line width=2pt] \foreach \k in {1,2,3} { (0.0+\k*1.45,2.9) -- ++(0,-5.8) (0.0,2.9-\k*1.45) -- ++(5.8,0) };
+\node[anchor=south, font=\sffamily\large] at (0.725,2.98) {Hello};
+\node[anchor=south, font=\sffamily\large] at (2.175,2.98) {I};
+\node[anchor=south, font=\sffamily\large] at (3.625,2.98) {love};
+\node[anchor=south, font=\sffamily\large] at (5.074999999999999,2.98) {you};
+\node[anchor=east, font=\sffamily\large] at (-0.12,2.175) {Hello};
+\node[anchor=east, font=\sffamily\large] at (-0.12,0.725) {I};
+\node[anchor=east, font=\sffamily\large] at (-0.12,-0.725) {love};
+\node[anchor=east, font=\sffamily\large] at (-0.12,-2.175) {you};
+\node[muted, font=\sffamily\small] at (2.9,3.75) {ključ $j$ (key) $\rightarrow$};
+\node[muted, font=\sffamily\small, rotate=90] at (-1.55,0.0) {$\leftarrow$ poizvedba $i$ (query)};
+\node[font=\sffamily\bfseries\Large] at (2.9,4.65) {Matrika pozornosti};
+\draw[{Latex[length=3mm]}-{Latex[length=3mm]}, line width=1.2pt, muted] (6.5,-0.05) -- (8.3,-0.05);
+\node[font=\sffamily\bfseries\Large] at (14.0,4.65) {Samopozornost kot usmerjen utežen graf};
+\node[circle, draw=jet, line width=1.2pt, fill=jet!12, minimum size=13mm, font=\sffamily\large] (Hello) at (10.8,-0.05) {Hello};
+\node[circle, draw=jet, line width=1.2pt, fill=jet!12, minimum size=13mm, font=\sffamily\large] (I) at (14.0,2.35) {I};
+\node[circle, draw=jet, line width=1.2pt, fill=jet!12, minimum size=13mm, font=\sffamily\large] (love) at (14.0,-2.45) {love};
+\node[circle, draw=jet, line width=1.2pt, fill=jet!12, minimum size=13mm, font=\sffamily\large] (you) at (17.2,-0.05) {you};
+\draw[-{Latex[length=4.20mm, width=3.40mm]}, line width=2.96pt, jet!87!white] (Hello.150) to[out=150, in=210, looseness=5.5] node[left, text=ink, font=\sffamily] {0.8} (Hello.210);
+\draw[-{Latex[length=2.45mm, width=2.00mm]}, line width=0.72pt, jet!41!white, shorten >=1pt] (Hello) to[bend left=11] node[pos=0.26, fill=white, inner sep=1.2pt, text=ink, font=\sffamily\small] {0.1} (I);
+\draw[-{Latex[length=2.33mm, width=1.90mm]}, line width=0.56pt, jet!38!white, shorten >=1pt] (Hello) to[bend left=11] node[pos=0.26, fill=white, inner sep=1.2pt, text=ink, font=\sffamily\small] {0.05} (love);
+\draw[-{Latex[length=2.33mm, width=1.90mm]}, line width=0.56pt, jet!38!white, shorten >=1pt] (Hello) to[bend left=11] node[pos=0.26, fill=white, inner sep=1.2pt, text=ink, font=\sffamily\small] {0.05} (you);
+\draw[-{Latex[length=2.45mm, width=2.00mm]}, line width=0.72pt, jet!41!white, shorten >=1pt] (I) to[bend left=11] node[pos=0.26, fill=white, inner sep=1.2pt, text=ink, font=\sffamily\small] {0.1} (Hello);
+\draw[-{Latex[length=3.70mm, width=3.00mm]}, line width=2.32pt, jet!74!white] (I.60) to[out=60, in=120, looseness=5.5] node[above, text=ink, font=\sffamily] {0.6} (I.120);
+\draw[-{Latex[length=2.70mm, width=2.20mm]}, line width=1.04pt, jet!48!white, shorten >=1pt] (I) to[bend left=11] node[pos=0.26, fill=white, inner sep=1.2pt, text=ink, font=\sffamily\small] {0.2} (love);
+\draw[-{Latex[length=2.45mm, width=2.00mm]}, line width=0.72pt, jet!41!white, shorten >=1pt] (I) to[bend left=11] node[pos=0.26, fill=white, inner sep=1.2pt, text=ink, font=\sffamily\small] {0.1} (you);
+\draw[-{Latex[length=2.33mm, width=1.90mm]}, line width=0.56pt, jet!38!white, shorten >=1pt] (love) to[bend left=11] node[pos=0.26, fill=white, inner sep=1.2pt, text=ink, font=\sffamily\small] {0.05} (Hello);
+\draw[-{Latex[length=2.70mm, width=2.20mm]}, line width=1.04pt, jet!48!white, shorten >=1pt] (love) to[bend left=11] node[pos=0.26, fill=white, inner sep=1.2pt, text=ink, font=\sffamily\small] {0.2} (I);
+\draw[-{Latex[length=3.83mm, width=3.10mm]}, line width=2.48pt, jet!77!white] (love.240) to[out=240, in=300, looseness=5.5] node[below, text=ink, font=\sffamily] {0.65} (love.300);
+\draw[-{Latex[length=2.45mm, width=2.00mm]}, line width=0.72pt, jet!41!white, shorten >=1pt] (love) to[bend left=11] node[pos=0.26, fill=white, inner sep=1.2pt, text=ink, font=\sffamily\small] {0.1} (you);
+\draw[-{Latex[length=2.70mm, width=2.20mm]}, line width=1.04pt, jet!48!white, shorten >=1pt] (you) to[bend left=11] node[pos=0.26, fill=white, inner sep=1.2pt, text=ink, font=\sffamily\small] {0.2} (Hello);
+\draw[-{Latex[length=2.45mm, width=2.00mm]}, line width=0.72pt, jet!41!white, shorten >=1pt] (you) to[bend left=11] node[pos=0.26, fill=white, inner sep=1.2pt, text=ink, font=\sffamily\small] {0.1} (I);
+\draw[-{Latex[length=2.45mm, width=2.00mm]}, line width=0.72pt, jet!41!white, shorten >=1pt] (you) to[bend left=11] node[pos=0.26, fill=white, inner sep=1.2pt, text=ink, font=\sffamily\small] {0.1} (love);
+\draw[-{Latex[length=3.70mm, width=3.00mm]}, line width=2.32pt, jet!74!white] (you.330) to[out=330, in=30, looseness=5.5] node[right, text=ink, font=\sffamily] {0.6} (you.30);
+\end{tikzpicture}
+\end{document}
