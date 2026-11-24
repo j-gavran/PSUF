@@ -1,7 +1,8 @@
 """Cleaning of Cankar texts before character-level tokenization by Opus 5.5."""
+
+import html
 import re
 import sys
-import html
 import unicodedata
 
 
@@ -10,7 +11,11 @@ def clean(text: str, keep_headers: bool = False) -> str:
     text = text.replace("\r\n", "\n").replace("\r", "\n")
 
     # broken HTML entities / encoding errors found in the sources
-    text = text.replace("&ecatue;", "é").replace("&aagrave;", "à").replace("&kadar", "kadar")
+    text = (
+        text.replace("&ecatue;", "é")
+        .replace("&aagrave;", "à")
+        .replace("&kadar", "kadar")
+    )
     text = html.unescape(text)
     text = text.replace("\x82", "é")  # mis-encoded é (cp437/cp850 byte 0x82)
     text = text.replace("[uredi]", "")  # Wikivir "edit" links
@@ -30,10 +35,14 @@ def clean(text: str, keep_headers: bool = False) -> str:
     text = text.replace("…", "...")
 
     # section separators and headers
-    text = re.sub(r"^[ \t]*\*[ \t*]*$", "", text, flags=re.M)  # separators like * * *
-    text = re.sub(r"^[ \t]*[IVXL]+\.?[ \t]*$", "", text, flags=re.M)  # bare chapter numbers (II, IV., ...)
+    text = re.sub(
+        r"^[ \t]*\*[ \t*]*$", "", text, flags=re.MULTILINE
+    )  # separators like * * *
+    text = re.sub(
+        r"^[ \t]*[IVXL]+\.?[ \t]*$", "", text, flags=re.MULTILINE
+    )  # bare chapter numbers (II, IV., ...)
     if not keep_headers:
-        text = re.sub(r"^=== .* ===$", "", text, flags=re.M)
+        text = re.sub(r"^=== .* ===$", "", text, flags=re.MULTILINE)
 
     # whitespace
     text = "\n".join(line.strip() for line in text.split("\n"))
